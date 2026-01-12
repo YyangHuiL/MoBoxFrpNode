@@ -22,5 +22,10 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/depend/MossLib.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>6.2.2</version>
+        </dependency>
     </dependencies>
 </project>

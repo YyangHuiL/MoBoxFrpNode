@@ -9,16 +9,15 @@ public class TaskLogin {
         try {
             JSONObject loginData = APILogin.getResult();
             if (loginData == null) {
-                BasicInfo.logger.sendError("无法连接到主控，三秒后重试！");
+                BasicInfo.logger.sendWarn("无法连接到主控，三秒后重试！");
                 Thread.sleep(3000L);
                 executeTask();
                 return;
             }
             if (!loginData.getBoolean("success")) {
                 BasicInfo.logger.sendError("登录失败："+loginData.getString("message"));
-                return;
+                System.exit(1);
             }
-
             BasicInfo.logger.sendInfo("登录成功！");
             BasicInfo.logger.sendInfo("节点编码："+loginData.getString("nodeID"));
             BasicInfo.logger.sendInfo("节点名称："+loginData.getString("name"));

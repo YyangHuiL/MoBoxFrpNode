@@ -3,6 +3,7 @@ package org.moboxlab.MoBoxFrpNode;
 import org.moboxlab.MoBoxFrpNode.Command.CommandDebug;
 import org.moboxlab.MoBoxFrpNode.Command.CommandExit;
 import org.moboxlab.MoBoxFrpNode.Task.TaskLogin;
+import org.moboxlab.MoBoxFrpNode.Tick.TickStatus;
 import org.mossmc.mosscg.MossLib.Command.CommandManager;
 import org.mossmc.mosscg.MossLib.Config.ConfigManager;
 import org.mossmc.mosscg.MossLib.File.FileCheck;
@@ -41,6 +42,10 @@ public class Main {
         //初始化API
         BasicInfo.logger.sendInfo("正在登录至主控......");
         TaskLogin.executeTask();
+
+        //Tick线程初始化
+        BasicInfo.logger.sendInfo("正在启动Tick线程......");
+        TickStatus.runTick();
 
         //命令行初始化
         CommandManager.initCommand(BasicInfo.logger,true);

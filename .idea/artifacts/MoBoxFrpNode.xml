@@ -4,7 +4,12 @@
     <root id="archive" name="MoBoxFrpNode.jar">
       <element id="module-output" name="MoBoxFrpNode" />
       <element id="extracted-dir" path="$PROJECT_DIR$/depend/MossLib.jar" path-in-jar="/" />
-      <element id="directory" name="dependency" />
+      <element id="directory" name="dependency">
+        <element id="library" level="project" name="Maven: com.github.oshi:oshi-core:6.2.2" />
+        <element id="library" level="project" name="Maven: net.java.dev.jna:jna-platform:5.12.1" />
+        <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.36" />
+        <element id="library" level="project" name="Maven: net.java.dev.jna:jna:5.12.1" />
+      </element>
     </root>
   </artifact>
 </component>
