@@ -18,7 +18,7 @@ public class BasicInfo {
     public static String author = "墨守MossCG";
 
     //贡献者信息，如果你做出了涉及代码的pr且代码量不少于100lines，请自行添加你的ID到此处
-    public static String contributor = "";
+    public static String contributor = "MossCG";
 
     //MossLib框架功能模块
     public static ObjectLogger logger;

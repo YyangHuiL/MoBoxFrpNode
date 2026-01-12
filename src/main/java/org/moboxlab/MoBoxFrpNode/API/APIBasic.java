@@ -12,16 +12,16 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class APIBasic {
-    public static JSONObject postAPI(JSONObject data) {
+    public static JSONObject postAPI(String route,JSONObject data) {
         try {
             //初始化必要信息
             String address = BasicInfo.config.getString("address");
             String nodeID = BasicInfo.config.getString("nodeID");
             String nodeAuth = BasicInfo.config.getString("nodeAuth");
-            data.put("nodeID",nodeID);
-            data.put("nodeAuth",nodeAuth);
+            data.put("node",nodeID);
+            data.put("auth",nodeAuth);
             //建立连接
-            URL targetURL = new URL(address+"/API");
+            URL targetURL = new URL(address+route);
             HttpURLConnection connection = (HttpURLConnection) targetURL.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Connection", "keep-alive");
