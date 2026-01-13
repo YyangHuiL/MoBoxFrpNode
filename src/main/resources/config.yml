@@ -11,3 +11,8 @@ nodeAuth: "123"
 #系统类型
 #Windows or Linux
 systemType: "Windows"
+
+
+#----------------------------------
+#是否显示调试信息
+debug: false
