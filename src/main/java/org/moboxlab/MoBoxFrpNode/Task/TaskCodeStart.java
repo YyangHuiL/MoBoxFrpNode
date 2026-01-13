@@ -11,9 +11,6 @@ public class TaskCodeStart {
             ObjectProcess process = new ObjectProcess();
             process.name = key;
             process.data = data;
-            if (BasicInfo.config.getString("systemType").equals("Linux")) {
-                process.executeFile = "./MoBoxFrp/frp/frps";
-            }
             process.start();
             CacheProcess.processMap.put(key,process);
         } catch (Exception e) {

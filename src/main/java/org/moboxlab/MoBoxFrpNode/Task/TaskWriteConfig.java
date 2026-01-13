@@ -2,6 +2,7 @@ package org.moboxlab.MoBoxFrpNode.Task;
 
 import com.alibaba.fastjson.JSONObject;
 import org.moboxlab.MoBoxFrpNode.BasicInfo;
+import org.mossmc.mosscg.MossLib.File.FileCheck;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -40,6 +41,20 @@ public class TaskWriteConfig {
             writer.write(builder.toString());
             writer.flush();
             writer.close();
+            //释放frp本体
+            String systemType = BasicInfo.config.getString("systemType");
+            String token = data.getString("token");
+            switch (systemType) {
+                case "Windows":
+                    FileCheck.checkFileExist("./MoBoxFrp/frp/frps_"+token+".exe","frp/frps.exe");
+                    break;
+                case "Linux":
+                    FileCheck.checkFileExist("./MoBoxFrp/frp/frps_"+token,"frp/frps");
+                    break;
+                default:
+                    BasicInfo.logger.sendWarn("不支持的平台类型: " + systemType);
+                    break;
+            }
         } catch (Exception e) {
             BasicInfo.logger.sendException(e);
             BasicInfo.logger.sendWarn("执行任务WriteConfig时出现异常！");
