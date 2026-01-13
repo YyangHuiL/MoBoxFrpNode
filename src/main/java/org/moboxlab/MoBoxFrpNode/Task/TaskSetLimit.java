@@ -2,11 +2,6 @@ package org.moboxlab.MoBoxFrpNode.Task;
 
 import com.alibaba.fastjson.JSONObject;
 import org.moboxlab.MoBoxFrpNode.BasicInfo;
-import org.moboxlab.MoBoxFrpNode.Cache.CacheProcess;
-import org.moboxlab.MoBoxFrpNode.Object.ObjectProcess;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 public class TaskSetLimit {
     public static void executeTask(JSONObject data){
@@ -40,22 +35,7 @@ public class TaskSetLimit {
         command.append("-ThrottleRate ").append(band*1280000).append(" ");
         command.append("-AppPathName \"frps_").append(token).append(".exe\" ");
         command.append("-IPProtocol \"Both\"");
-        Process powerShellProcess = Runtime.getRuntime().exec(command.toString());
-        BufferedReader powershellOutput = new BufferedReader(new InputStreamReader(powerShellProcess.getInputStream()));
-        BufferedReader powershellError = new BufferedReader(new InputStreamReader(powerShellProcess.getErrorStream()));
-        String powershellInfo = powershellOutput.readLine();
-        while (powershellInfo != null) {
-            BasicInfo.sendDebug(powershellInfo);
-            powershellInfo = powershellOutput.readLine();
-        }
-        powershellInfo = "";
-        while (powershellInfo != null) {
-            BasicInfo.sendDebug(powershellInfo);
-            powershellInfo = powershellError.readLine();
-        }
-        powerShellProcess.waitFor();
-        powerShellProcess.destroy();
-        powershellOutput.close();
+        TaskExecuteCommand.executeTask(command.toString());
     }
 
     private static void setLinuxLimit(int band, int port) throws Exception{

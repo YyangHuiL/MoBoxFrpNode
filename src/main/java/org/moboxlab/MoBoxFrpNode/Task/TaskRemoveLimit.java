@@ -3,9 +3,6 @@ package org.moboxlab.MoBoxFrpNode.Task;
 import com.alibaba.fastjson.JSONObject;
 import org.moboxlab.MoBoxFrpNode.BasicInfo;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
 public class TaskRemoveLimit {
     public static void executeTask(JSONObject data){
         try {
@@ -36,22 +33,7 @@ public class TaskRemoveLimit {
         command.append("powershell.exe Remove-NetQosPolicy ");
         command.append("-Name \"frps_").append(token).append("\" ");
         command.append("-Confirm:$false");
-        Process powerShellProcess = Runtime.getRuntime().exec(command.toString());
-        BufferedReader powershellOutput = new BufferedReader(new InputStreamReader(powerShellProcess.getInputStream()));
-        BufferedReader powershellError = new BufferedReader(new InputStreamReader(powerShellProcess.getErrorStream()));
-        String powershellInfo = powershellOutput.readLine();
-        while (powershellInfo != null) {
-            BasicInfo.sendDebug(powershellInfo);
-            powershellInfo = powershellOutput.readLine();
-        }
-        powershellInfo = "";
-        while (powershellInfo != null) {
-            BasicInfo.sendDebug(powershellInfo);
-            powershellInfo = powershellError.readLine();
-        }
-        powerShellProcess.waitFor();
-        powerShellProcess.destroy();
-        powershellOutput.close();
+        TaskExecuteCommand.executeTask(command.toString());
     }
 
     private static void removeLinuxLimit(int band, int port) throws Exception{
