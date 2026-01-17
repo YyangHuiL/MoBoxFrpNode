@@ -22,12 +22,12 @@ fi
 
 # 创建JAR（使用已有的MANIFEST.MF）
 if [ -f "META-INF/MANIFEST.MF" ]; then
-  jar cfm ../MoBoxFrpClient.jar META-INF/MANIFEST.MF .
+  jar cfm ../MoBoxFrpNode.jar META-INF/MANIFEST.MF .
 else
   # 如果没有MANIFEST.MF，创建一个
   echo "Manifest-Version: 1.0" > MANIFEST.MF
   echo "Main-Class: your.main.Class" >> MANIFEST.MF
-  jar cfm ../MoBoxFrpClient.jar MANIFEST.MF .
+  jar cfm ../MoBoxFrpNode.jar MANIFEST.MF .
 fi
 
 # 回到项目根目录
