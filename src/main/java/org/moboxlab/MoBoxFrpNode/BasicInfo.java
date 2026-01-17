@@ -11,7 +11,7 @@ public class BasicInfo {
     //小更新之间基本上只是小功能更新，可以上下兼容
     //修改次数只代表一些微调（但是基本上建议更新）
     //版本类型 Beta为测试版，Stable为稳定版
-    public static String version = "V0.0.0.0.0000";
+    public static String version = "V1.0.0.0.0357";
     public static String versionType = "Beta";
 
     //作者信息，请勿修改
