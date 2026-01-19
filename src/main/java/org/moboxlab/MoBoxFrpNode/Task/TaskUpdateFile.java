@@ -9,6 +9,7 @@ public class TaskUpdateFile {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void executeTask(){
         try {
+            FileCheck.checkDirExist("./MoBoxFrp/frp");
             File file = new File("./MoBoxFrp/frp");
             if (!file.exists()) return;
             File[] list = file.listFiles();
@@ -20,7 +21,6 @@ public class TaskUpdateFile {
                     rubbish.delete();
                 }
             }
-            FileCheck.checkDirExist("./MoBoxFrp/frp");
         } catch (Exception e) {
             BasicInfo.logger.sendException(e);
             BasicInfo.logger.sendWarn("执行任务UpdateFile时出现异常！");
