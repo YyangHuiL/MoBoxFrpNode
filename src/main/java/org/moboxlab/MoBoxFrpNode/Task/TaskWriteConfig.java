@@ -5,6 +5,7 @@ import org.moboxlab.MoBoxFrpNode.BasicInfo;
 import org.mossmc.mosscg.MossLib.File.FileCheck;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 
 public class TaskWriteConfig {
@@ -50,6 +51,7 @@ public class TaskWriteConfig {
                     break;
                 case "Linux":
                     FileCheck.checkFileExist("./MoBoxFrp/frp/frps_"+token,"frp/frps");
+                    setFilePermission("./MoBoxFrp/frp/frps_"+token);
                     break;
                 default:
                     BasicInfo.logger.sendWarn("不支持的平台类型: " + systemType);
@@ -59,5 +61,13 @@ public class TaskWriteConfig {
             BasicInfo.logger.sendException(e);
             BasicInfo.logger.sendWarn("执行任务WriteConfig时出现异常！");
         }
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private static void setFilePermission(String path) {
+        File file = new File(path);
+        file.setWritable(true);
+        file.setExecutable(true);
+        file.setReadable(true);
     }
 }
