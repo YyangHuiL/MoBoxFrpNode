@@ -1,6 +1,7 @@
 package org.moboxlab.MoBoxFrpNode.Task;
 
 import org.moboxlab.MoBoxFrpNode.BasicInfo;
+import org.moboxlab.MoBoxFrpNode.Cache.CacheClassID;
 
 public class TaskClearLimit {
     public static void executeTask(){
@@ -33,7 +34,8 @@ public class TaskClearLimit {
     private static void clearLinuxLimit(){
         String network = BasicInfo.config.getString("network");
         TaskExecuteCommand.executeTask("tc qdisc del dev "+network+" root");
-        TaskExecuteCommand.executeTask("tc qdisc add dev "+network+" root handle 1: htb default 20");
+        TaskExecuteCommand.executeTask("tc qdisc add dev "+network+" root handle 1: htb default 1");
         TaskExecuteCommand.executeTask("tc class add dev "+network+" parent 1: classid 1:1 htb rate 10000mbit");
+        CacheClassID.initClassID();
     }
 }
