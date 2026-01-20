@@ -16,6 +16,8 @@ public class ObjectProcess {
     //进程基本数据
     public JSONObject data;
 
+    //运行状态
+    public boolean alive = true;
     //守护线程
     public Thread daemon;
     //进程本体
@@ -47,15 +49,15 @@ public class ObjectProcess {
     public void stop() throws Exception{
         BasicInfo.logger.sendInfo("正在停止穿透码："+name);
         //停止进程
-        daemon.interrupt();
+        alive = false;
         process.destroy();
+        daemon.interrupt();
         //删除配置
         TaskRemoveConfig.executeTask(configFile,data);
         //删除限速
         TaskRemoveLimit.executeTask(data);
     }
 
-    @SuppressWarnings("InfiniteLoopStatement")
     public static void daemonVoid(ObjectProcess object) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(object.process.getInputStream()));
         while (true) {
@@ -68,6 +70,8 @@ public class ObjectProcess {
                 BasicInfo.logger.sendException(e);
                 BasicInfo.logger.sendWarn("守护进程出现错误！穿透码名称："+object.name);
             }
+            if (!object.process.isAlive()) break;
+            if (!object.alive) break;
         }
     }
 }
