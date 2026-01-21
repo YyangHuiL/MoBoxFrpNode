@@ -1,5 +1,5 @@
 # 构建阶段 - 使用 Maven + JDK 8
-FROM maven:3.8-openjdk-8 AS builder
+FROM maven:3.8-eclipse-temurin-8 AS builder
 
 # 设置工作目录
 WORKDIR /build
@@ -35,7 +35,7 @@ RUN echo "开始编译项目..." && \
     echo "JAR 打包完成: /build/target/MoBoxFrpNode.jar"
 
 # 运行时镜像
-FROM openjdk:8-jdk
+FROM eclipse-temurin:8-jdk
 
 # 安装必要的工具
 RUN apt-get update && \
