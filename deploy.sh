@@ -126,19 +126,35 @@ EOF
 
 # 构建镜像或导入镜像
 build_image() {
+    print_info "Checking Docker image status..."
+    
+    # 1. 尝试导入离线包
     if [ -f "moboxfrp-node.tar" ]; then
-        print_info "检测到离线镜像文件，开始导入..."
+        print_info "Found offline image package (moboxfrp-node.tar), loading..."
         docker load -i moboxfrp-node.tar
-        print_success "镜像导入完成"
-    else
-        print_info "未检测到离线镜像，开始构建 Docker 镜像..."
-        # 检查是有 build 上下文 (Dockerfile)
-        if [ -f "Dockerfile" ]; then
-            docker-compose build
-            print_success "镜像构建完成"
-        else
-            print_warning "未找到 Dockerfile 且未找到离线镜像，尝试直接启动(可能拉取远程镜像)..."
+        print_success "Offline image loaded"
+        return
+    fi
+    
+    # 2. 检查本地是否已存在镜像
+    if docker image inspect moboxfrp-node:latest >/dev/null 2>&1; then
+        print_info "Image 'moboxfrp-node:latest' already exists locally."
+        read -p "Rebuild/Reload? (y/N): " FORCE_REBUILD
+        if [[ ! "$FORCE_REBUILD" =~ ^[Yy]$ ]]; then
+            return
         fi
+    fi
+
+    # 3. 检查是否已有 Dockerfile (不执行构建，仅提示)
+    # 既然是纯离线部署，这里不再尝试构建
+    
+    # 4. 如果都失败了
+    if ! docker image inspect moboxfrp-node:latest >/dev/null 2>&1; then
+         print_error "Critical Error: Docker image 'moboxfrp-node:latest' not found!"
+         print_error "  - No offline package (moboxfrp-node.tar) found."
+         print_error "  - Image not present in local registry."
+         print_error "Please ensure you have uploaded the full release package."
+         exit 1
     fi
 }
 
