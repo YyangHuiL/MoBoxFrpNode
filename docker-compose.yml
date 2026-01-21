@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  moboxfrp-node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: moboxfrp-node:latest
+    container_name: moboxfrp-node
+
+    # 需要特权模式以支持 tc 命令进行流量控制
+    privileged: true
+
+    # 或者使用更精细的权限控制（推荐）
+    # cap_add:
+    #   - NET_ADMIN
+    #   - SYS_ADMIN
+
+    # 使用主机网络模式以便 FRP 端口映射正常工作
+    # 这样容器可以直接使用主机的网络接口
+    network_mode: "host"
+
+    # 如果不使用 host 网络，可以手动映射端口（需要根据实际情况调整）
+    # ports:
+    #   - "7000-7999:7000-7999"   # FRP 控制端口范围
+    #   - "20000-30000:20000-30000" # FRP 数据端口范围
+
+    # 环境变量配置
+    # 可以直接在这里修改，或者创建 .env 文件（推荐）
+    # 使用 .env 文件: cp .env.example .env 并修改配置
+    environment:
+      # 主控地址（必须修改）
+      - MOBOX_ADDRESS=${MOBOX_ADDRESS:-http://your-master-server:2026}
+
+      # 节点编号（必须修改）
+      - MOBOX_NODE_ID=${MOBOX_NODE_ID:-node1}
+
+      # 节点密码（必须修改）
+      - MOBOX_NODE_AUTH=${MOBOX_NODE_AUTH:-your_password_here}
+
+      # 系统类型（保持 Linux）
+      - MOBOX_SYSTEM_TYPE=${MOBOX_SYSTEM_TYPE:-Linux}
+
+      # 网络接口（auto 自动检测，或指定如 eth0, ens33 等）
+      - MOBOX_NETWORK=${MOBOX_NETWORK:-auto}
+
+      # 调试模式
+      - MOBOX_DEBUG=${MOBOX_DEBUG:-false}
+
+    # 数据持久化
+    volumes:
+      # 日志目录
+      - ./data/logs:/opt/mossfrp/MoBoxFrp/logs
+
+      # 依赖目录
+      - ./data/dependency:/opt/mossfrp/MoBoxFrp/dependency
+      # 如果需要自定义配置文件，可以挂载（可选）
+      # - ./config.yml:/opt/mossfrp/MoBoxFrp/config.yml
+
+      # 重启策略
+    restart: unless-stopped
+
+    # 日志配置
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
