@@ -31,12 +31,21 @@ jobs:
       - name: Custom package with MossLib
         run: ./package.sh
 
-      # 上传 JAR 文件作为 Artifact (不压缩)
-      - name: Upload JAR artifact (uncompressed)
-        uses: actions/upload-artifact@v4.3.1  # [!code --]
+      # 上传 JAR 文件
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
         with:
           name: MoBoxFrpNode-JAR
           path: target/MoBoxFrpNode.jar
+          if-no-files-found: error
+          compression-level: 0
+
+      # 上传 Docker 离线包
+      - name: Upload Offline Docker Package
+        uses: actions/upload-artifact@v4
+        with:
+          name: MoBoxFrpNode-Offline
+          path: target/release.tar.gz
           if-no-files-found: error
           compression-level: 0
 
@@ -49,17 +58,26 @@ jobs:
       contents: write # 发布 Release 需要写入权限
 
     steps:
-      - name: Download built artifact
+      - name: Download JAR artifact
         uses: actions/download-artifact@v4
         with:
           name: MoBoxFrpNode-JAR
+          path: artifacts
+
+      - name: Download Offline Docker Package
+        uses: actions/download-artifact@v4
+        with:
+          name: MoBoxFrpNode-Offline
+          path: artifacts
 
       - name: Display downloaded files
-        run: ls -la
+        run: ls -R artifacts
 
       # 3. 自动发布到 GitHub Release
-      - name: Attach JAR to Release
+      - name: Attach Assets to Release
         uses: softprops/action-gh-release@v1
         with:
-          # 将构建好的 JAR 附加到触发此次工作流的那个 Release 中
-          files: MoBoxFrpNode.jar
+          # 将构建好的文件附加到触发此次工作流的那个 Release 中
+          files: |
+            artifacts/MoBoxFrpNode.jar
+            artifacts/release.tar.gz
