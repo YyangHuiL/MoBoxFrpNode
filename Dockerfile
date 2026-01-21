@@ -35,7 +35,7 @@ RUN echo "开始编译项目..." && \
     echo "JAR 打包完成: /build/target/MoBoxFrpNode.jar"
 
 # 运行时镜像
-FROM openjdk:8
+FROM openjdk:8-jdk
 
 # 安装必要的工具
 RUN apt-get update && \
